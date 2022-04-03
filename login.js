@@ -3,30 +3,26 @@ if (loggedInUser) {
   window.location.href = "index.html";
 }
 
-const form = document.getElementById("registerationForm");
+const form = document.getElementById("loginForm");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  const formData = new FormData(document.getElementById("registerationForm"));
-
+  const formData = new FormData(document.getElementById("loginForm"));
+  console.log("submit");
   const data = fetchUtils(
-    "https://takesomerest.herokuapp.com/api/users/register",
+    "https://takesomerest.herokuapp.com/api/users/login",
     {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName: formData.get("first_name"),
-        lastName: formData.get("last_name"),
         email: formData.get("email"),
         password: formData.get("password"),
-        phoneNumber: formData.get("phone"),
-        country: parseInt(formData.get("country")),
-        businessName: formData.get("business_name"),
       }),
     }
   ).then((data) => {
-    window.location.href = "login.html";
+    localStorage.setItem("user", JSON.stringify(data));
+    window.location.href = "index.html";
   });
 });
 
